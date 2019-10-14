@@ -1,0 +1,47 @@
+﻿@model List<DealDouble.Entities.Auction>
+
+
+    <div class="container">
+        <table class="table table-bordered" style="margin-top:10px">
+            <thaed>
+                <tr>
+                    <th> Title</th>
+                    <th> Descrition</th>
+                    <th> ActualAmount</th>
+                    <th> StartingTime</th>
+                    <th> EndingTime</th>
+                    <th> Actions</th>
+                    <th> Edit</th>
+                </tr>
+            </thaed>
+            <tbody>
+                @foreach (var auction in Model)
+                {
+                <tr>
+                    <td> @auction.Title</td>
+                    <td>
+                        @auction.Description
+                    </td>
+                    <td>
+                        @auction.ActualAmount
+                    </td>
+                    <td>
+                        @auction.StartingTime
+                    </td>
+                    <td>
+                        @auction.EndingTime
+                    </td>
+                    <td>
+                        <a class="btn" href=/auctions/Delete/@auction.ID>Delete</a>
+                    </td>
+                    <td>
+                        <a class="btn" href=/auctions/Edit/@auction.ID>Edit</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
