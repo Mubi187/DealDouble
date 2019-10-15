@@ -1,7 +1,7 @@
 ﻿@model List<DealDouble.Entities.Auction>
 
 
-    <div class="container">
+    <div id="listArea" class="container">
         <table class="table table-bordered" style="margin-top:10px">
             <thaed>
                 <tr>
@@ -11,37 +11,90 @@
                     <th> StartingTime</th>
                     <th> EndingTime</th>
                     <th> Actions</th>
-                    <th> Edit</th>
+                    
                 </tr>
             </thaed>
             <tbody>
                 @foreach (var auction in Model)
                 {
-                <tr>
-                    <td> @auction.Title</td>
-                    <td>
-                        @auction.Description
-                    </td>
-                    <td>
-                        @auction.ActualAmount
-                    </td>
-                    <td>
-                        @auction.StartingTime
-                    </td>
-                    <td>
-                        @auction.EndingTime
-                    </td>
-                    <td>
-                        <a class="btn" href=/auctions/Delete/@auction.ID>Delete</a>
-                    </td>
-                    <td>
-                        <a class="btn" href=/auctions/Edit/@auction.ID>Edit</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td> @auction.Title</td>
+                        <td>
+                            @auction.Description
+                        </td>
+                        <td>
+                            @auction.ActualAmount
+                        </td>
+                        <td>
+                            @auction.StartingTime
+                        </td>
+                        <td>
+                            @auction.EndingTime
+                        </td>
+                        <td>
+                            <button class="btn DeleteBtn" Data_id="@auction.ID">Delete</button>
+                            <button class="btn EditBtn" Data_id="@auction.ID">Edit</button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
+
+        <div>
+            <button class="btn" id="createauction">
+                Create new auction
+            </button>
+
+        </div>
+
+        <div id="ContentArea">
+        </div>
+
+        <script>
+            $("#createauction").click(function () {
+                $.ajax({
+                    url: "auctions/create/",
+                    method: "get"
+                }).done(function (response) {
+                    debugger;
+                    $("#ContentArea").html(response);
+                });
+            });
+
+            $(".EditBtn").click(function () {
+                debugger;
+                $.ajax({
+                    url: "auctions/Edit/",
+                    method: "get",
+                    data: {
+                       ID: $(this).attr("Data_id")
+                    }
+                }).done(function (response) {
+                    debugger;
+                    $("#ContentArea").html(response);
+                });
+            });
+            $(".DeleteBtn").click(function () {
+                debugger;
+                var result = confirm("Are you sure to delete this Auction!");
+                debugger;
+                if (result == true) {
+                   $.ajax({
+                      url: "/auctions/delete/",
+                     method: "post",
+                     data: {
+                           ID: $(this).attr("Data_id")
+                     }
+                   }).done(function (response) {
+                       debugger;
+                       $("#listArea").html(response);
+                   });
+                }
+            });
+
+        </script>
     </div>
+
 
 
 
