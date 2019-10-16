@@ -3,27 +3,35 @@
     <div>
         <h2>Edit Auction</h2>
 
-        <form id="EditForm" method="post" >
+        <form id="EditForm" method="post">
             <input type="hidden" name="ID" value="@Model.ID" />
-            <label>Title</label>
-            <input name="Title" value="@Model.Title" />
-            <br />
+            
 
-            <label> Description</label>
-            <input name="Description" value="@Model.Description" />
-            <br />
+            <div class="form-group">
+                <label>Title</label>
+                <input class="form-control" name="Title" value="@Model.Title" />
+            </div>
 
-            <label>ActualAmount</label>
-            <input name="ActualAmount" value="@Model.ActualAmount" />
-            <br />
+            <div class="form-group">
+                <label> Description</label>
+                <input class="form-control" name="Description" value="@Model.Description" />
+            </div>
 
-            <label>StartingTime</label>
-            <input name="StartingTime" value="@Model.StartingTime" />
-            <br />
+            <div class="form-group">
+                <label>ActualAmount</label>
+                <input class="form-control" name="ActualAmount" value="@Model.ActualAmount" />
+            </div>
 
-            <label>EndingTime</label>
-            <input name="EndingTime" value="@Model.EndingTime" />
-            <br />
+            <div class="form-group">
+                <label>StartingTime</label>
+                <input class="form-control" name="StartingTime" value="@Model.StartingTime" />
+            </div>
+
+            <div class="form-group">
+                <label>EndingTime</label>
+                <input class="form-control" name="EndingTime" value="@Model.EndingTime" />
+            </div>
+
             <button id="SaveButton" type="button">Save</button>
         </form>
     </div>
