@@ -38,7 +38,7 @@
     <script>
         $("#SaveButton").click(function () {
             $.ajax({
-                url: "/auctions/edit",
+                url: "@Url.Action("edit","Auctions")",
                 method: "post",
                 data: $("#EditForm").serialize()
             }).done(function (response) {

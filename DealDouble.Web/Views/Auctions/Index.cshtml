@@ -56,7 +56,7 @@
             <script>
                 $("#createauction").click(function () {
                     $.ajax({
-                        url: "auctions/create/",
+                        url: "@Url.Action("Create","Auctions")",
                         method: "get"
                     }).done(function (response) {
                         debugger;
@@ -68,7 +68,7 @@
                 $(".EditBtn").click(function () {
                     debugger;
                     $.ajax({
-                        url: "auctions/Edit/",
+                        url: "@Url.Action("edit","Auctions")",
                         method: "get",
                         data: {
                             ID: $(this).attr("Data_id")
@@ -84,7 +84,7 @@
                     debugger;
                     if (result == true) {
                         $.ajax({
-                            url: "/auctions/delete/",
+                            url: "@Url.Action("delete","Auctions")",
                             method: "post",
                             data: {
                                 ID: $(this).attr("Data_id")
