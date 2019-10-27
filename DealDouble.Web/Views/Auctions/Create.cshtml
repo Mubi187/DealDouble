@@ -1,9 +1,16 @@
 ﻿
-<h2>Create Auction</h2>
 
-<div class="container">
-    <form id="CreateForm" method="post" action="/auctions/create">
 
+<div class="modal-header">
+    <h5 class="modal-title">Create Auction</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form id="CreateForm" method="post" action="/auctions/create">
+
+ 
+    <div class="modal-body">
         <div class="form-group">
             <label>Title</label>
             <input class="form-control" name="Title" />
@@ -28,19 +35,60 @@
             <label>EndingTime</label>
             <input class="form-control" name="EndingTime" />
         </div>
-       
+        <div class="form-group">
+            <label>Select pictures</label>
+            <input id="AuctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
+            <div id="picturesArea"></div>
+            <input type="hidden" name="Auctionpictures" id="pictureIDs" />
+        </div> 
+        
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button class="btn btn-primary" type="button" id="SaveButton">Save</button>
-    </form>
-</div>
+    </div>
+</form>
+
+
 <script>
     $("#SaveButton").click(function () {
         $.ajax({
             url: "@Url.Action("Create","Auctions")",
-            method: "post",
+            type: "post",
             data: $("#CreateForm").serialize()
         }).done(function (response) {
-            debugger;
             $("#listArea").html(response);
+           $("#formModal").modal("toggle");
+        });
+    });
+
+    $("#AuctionPictures").change(function () {
+        debugger;
+        var pictures = this.files;
+        var picsData = new FormData();
+
+        for (var i = 0; i < pictures.length; i++) {
+            picsData.append("Picture", pictures[i]);
+        }
+        $.ajax({
+            url: "@Url.Action("UploadPictures","Shared")",
+            method: "post",
+            data: picsData,
+            dataType: "json",
+            processData: false,
+            contentType: false
+
+        }).done(function (responses) {
+            debugger;
+            var picIDs = '';
+            for (var i = 0; i < responses.length; i++) {
+                var picResponse = responses[i];
+
+                var imgHtml = "<img class='img-fluid' src='/content/images/"+ picResponse.pictureURL + "' />";
+                $("#picturesArea").append(imgHtml);
+                picIDs = picIDs + "," + picResponse.ID;
+            }
+            $("#pictureIDs").val(picIDs);
         });
     });
 </script>
