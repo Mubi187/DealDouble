@@ -1,30 +1,34 @@
 ﻿
-    <div class="row">
-        <div class="col-lg-12 mt-2">
+<div class="row">
+    <div class="col-lg-12 mt-2">
 
-            <div class="float-left">
-                <h2>Auctions</h2>
-            </div>
-            <div class="float-right">
-                <button class="btn btn-success text-right" id="createauction" data-toggle="modal" data-target="#formModal">
-                    Create new auction
-                </button>
-            </div>
-            <div>
-                @{Html.RenderAction("Listing");}
-            </div>
-
+        <div class="float-left">
+            <h2>Auctions</h2>
         </div>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content" id="ContentArea">
+        <div class="float-right">
+            <button class="btn btn-success text-right" id="createauction" data-toggle="modal" data-target="#formModal">
+                Create new auction
+            </button>
+        </div>
+        <div>
+            @{Html.RenderAction("Listing");}
+        </div>
 
-                </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="ContentArea">
+
             </div>
         </div>
     </div>
+</div>
+
+<div id="imageTemplate" style="display:none">
+    <img class='image img-fluid' src='' />
+</div>
 
 <script>
        $("#createauction").click(function () {
@@ -36,6 +40,12 @@
                $("#ContentArea").html(response);
            });
        });
+
+    function RemoveImageOnClick() {
+        $("#picturesArea .image").click(function () {
+            $(this).remove();
+        });
+    }
 </script>
 
 

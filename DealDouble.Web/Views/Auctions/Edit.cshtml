@@ -38,6 +38,17 @@
             <label>EndingTime</label>
             <input class="form-control" name="EndingTime" value="@Model.EndingTime" />
         </div>
+
+        @*--------home work-------*@
+        @*<div class="form-group">
+            <label>Select pictures</label>
+            <input id="AuctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
+            <div id="picturesArea"></div>
+            <input type="hidden" name="Auctionpictures" id="pictureIDs" />
+        </div>*@
+        @*----------------------------*@
+
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -56,6 +67,9 @@
                 $("#formModal").modal("toggle");
             });
         });
+    //-------------------------Home Work-----------------------------------------------
+        
+    //-------------------------------------------------------------------------------------
 </script>
 
 

@@ -8,6 +8,7 @@
             <thaed>
                 <tr>
                     <th> Title</th>
+                    <th> Category</th>
                     <th> Descrition</th>
                     <th> ActualAmount</th>
                     <th> StartingTime</th>
@@ -19,25 +20,26 @@
             <tbody>
                 @foreach (var auction in Model.Auctions)
                 {
-                    <tr>
-                        <td> @auction.Title</td>
-                        <td>
-                            @auction.Description
-                        </td>
-                        <td>
-                            @auction.ActualAmount
-                        </td>
-                        <td>
-                            @auction.StartingTime
-                        </td>
-                        <td>
-                            @auction.EndingTime
-                        </td>
-                        <td>
-                            <button class=" DeleteBtn btn btn-danger" Data_id="@auction.ID">Delete</button>
-                            <button class="EditBtn btn btn-primary" Data_id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td> @auction.Title</td>
+                    <td> @auction.Category.Name</td>
+                    <td>
+                        @auction.Description
+                    </td>
+                    <td>
+                        @auction.ActualAmount
+                    </td>
+                    <td>
+                        @auction.StartingTime
+                    </td>
+                    <td>
+                        @auction.EndingTime
+                    </td>
+                    <td>
+                        <button class=" DeleteBtn btn btn-danger" Data_id="@auction.ID">Delete</button>
+                        <button class="EditBtn btn btn-primary" Data_id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

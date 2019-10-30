@@ -1,4 +1,4 @@
-﻿
+﻿@model DealDouble.Web.ViewModels.CreateAuctionViewModel
 
 
 <div class="modal-header">
@@ -14,6 +14,16 @@
         <div class="form-group">
             <label>Title</label>
             <input class="form-control" name="Title" />
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <select class="form-control" name="CategoryID">
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.ID">@category.Name</option>
+                }
+            </select>
         </div>
 
         <div class="form-group">
@@ -52,6 +62,15 @@
 
 <script>
     $("#SaveButton").click(function () {
+        debugger;
+
+        var imageIDs = [];
+        $("#picturesArea .image").each(function () {
+            var imageID = $(this).attr("data-id");
+            imageIDs.push(imageID);
+        });
+        $("#pictureIDs").val(imageIDs.join());
+
         $.ajax({
             url: "@Url.Action("Create","Auctions")",
             type: "post",
@@ -63,10 +82,8 @@
     });
 
     $("#AuctionPictures").change(function () {
-        debugger;
         var pictures = this.files;
         var picsData = new FormData();
-
         for (var i = 0; i < pictures.length; i++) {
             picsData.append("Picture", pictures[i]);
         }
@@ -79,17 +96,21 @@
             contentType: false
 
         }).done(function (responses) {
-            debugger;
-            var picIDs = '';
             for (var i = 0; i < responses.length; i++) {
                 var picResponse = responses[i];
-
-                var imgHtml = "<img class='img-fluid' src='/content/images/"+ picResponse.pictureURL + "' />";
-                $("#picturesArea").append(imgHtml);
-                picIDs = picIDs + "," + picResponse.ID;
+                debugger;
+                AttachNewImage(picResponse.pictureURL, picResponse.ID);
             }
-            $("#pictureIDs").val(picIDs);
         });
     });
+
+    function AttachNewImage(imageURL, imageID) {
+        var $newImgHtml = $("#imageTemplate").clone();
+        $newImgHtml.find(".image").attr("src", "/content/images/" + imageURL);
+        $newImgHtml.find(".image").attr("data-id", imageID);
+        $("#picturesArea").append($newImgHtml.html());
+
+        RemoveImageOnClick();
+    }
 </script>
 
