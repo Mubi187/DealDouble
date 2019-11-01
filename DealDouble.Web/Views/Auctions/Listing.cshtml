@@ -3,7 +3,7 @@
 
 
 
-    <div id="listArea">
+    <div >
         <table class="table table-hover">
             <thaed>
                 <tr>
@@ -36,8 +36,8 @@
                         @auction.EndingTime
                     </td>
                     <td>
-                        <button class=" DeleteBtn btn btn-danger" Data_id="@auction.ID">Delete</button>
-                        <button class="EditBtn btn btn-primary" Data_id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                        <button class=" DeleteBtn btn btn-danger" data_id="@auction.ID">Delete</button>
+                        <button class="EditBtn btn btn-primary" data_id="@auction.ID" data-toggle="modal" data-target="#formModal">Edit</button>
                     </td>
                 </tr>
                 }
@@ -52,12 +52,13 @@
                         url: "@Url.Action("edit","Auctions")",
                         method: "get",
                         data: {
-                            ID: $(this).attr("Data_id")
+                            ID: $(this).attr("data_id")
                         }
                     }).done(function (response) {
                         $("#ContentArea").html(response);
                     });
-                });
+            });
+    
                 $(".DeleteBtn").click(function () {
                     var result = confirm("Are you sure to delete this Auction!");
                     if (result == true) {
@@ -65,13 +66,15 @@
                             url: "@Url.Action("delete","Auctions")",
                             method: "post",
                             data: {
-                                ID: $(this).attr("Data_id")
+                                ID: $(this).attr("data_id")
                             }
                         }).done(function (response) {
                             $("#listArea").html(response);
                         });
                     }
                 });
+
+
 </script>
 
 

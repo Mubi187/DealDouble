@@ -48,7 +48,7 @@
         <div class="form-group">
             <label>Select pictures</label>
             <input id="AuctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
-            <div id="picturesArea"></div>
+            <div id="picturesArea" class="mt-2"></div>
             <input type="hidden" name="Auctionpictures" id="pictureIDs" />
         </div> 
         
@@ -62,8 +62,6 @@
 
 <script>
     $("#SaveButton").click(function () {
-        debugger;
-
         var imageIDs = [];
         $("#picturesArea .image").each(function () {
             var imageID = $(this).attr("data-id");
@@ -82,6 +80,7 @@
     });
 
     $("#AuctionPictures").change(function () {
+        debugger;
         var pictures = this.files;
         var picsData = new FormData();
         for (var i = 0; i < pictures.length; i++) {
@@ -96,21 +95,16 @@
             contentType: false
 
         }).done(function (responses) {
+            debugger;
             for (var i = 0; i < responses.length; i++) {
                 var picResponse = responses[i];
                 debugger;
                 AttachNewImage(picResponse.pictureURL, picResponse.ID);
+
             }
         });
     });
 
-    function AttachNewImage(imageURL, imageID) {
-        var $newImgHtml = $("#imageTemplate").clone();
-        $newImgHtml.find(".image").attr("src", "/content/images/" + imageURL);
-        $newImgHtml.find(".image").attr("data-id", imageID);
-        $("#picturesArea").append($newImgHtml.html());
 
-        RemoveImageOnClick();
-    }
 </script>
 

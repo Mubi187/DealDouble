@@ -1,0 +1,73 @@
+﻿
+@model DealDouble.Web.ViewModels.CategoriesListingViewModel
+
+
+
+<div>
+    <table class="table table-hover">
+        <thaed>
+            <tr>
+                <th> Name</th>
+                <th> Descrition</th>
+                <th> Auctions</th>
+                <th> Actions</th>
+
+            </tr>
+        </thaed>
+        <tbody>
+            @foreach (var category in Model.Categories)
+            {
+                <tr>
+                    <td> @category.Name</td>
+                    <td>
+                        @category.Description
+                    </td>
+                    <td>
+                        @category.Auctions.Count()
+                    </td>
+                    
+                    <td>
+                        <button class=" DeleteBtn btn btn-danger" data_id="@category.ID">Delete</button>
+                        <button class="EditBtn btn btn-primary" data_id="@category.ID" data-toggle="modal" data-target="#formModal">Edit</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+            $(".EditBtn").click(function () {
+                    $.ajax({
+                        url: "@Url.Action("edit","categories")",
+                        method: "get",
+                        data: {
+                            ID: $(this).attr("data_id")
+                        }
+                    }).done(function (response) {
+                        $("#ContentArea").html(response);
+                    });
+            });
+
+                $(".DeleteBtn").click(function () {
+                    var result = confirm("Are you sure to delete this Auction!");
+                    if (result == true) {
+                        $.ajax({
+                            url: "@Url.Action("delete","Auctions")",
+                            method: "post",
+                            data: {
+                                ID: $(this).attr("data_id")
+                            }
+                        }).done(function (response) {
+                            $("#listArea").html(response);
+                        });
+                    }
+                });
+
+
+</script>
+
+
+
+
