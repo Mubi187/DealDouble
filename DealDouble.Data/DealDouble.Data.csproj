@@ -67,6 +67,14 @@
     <Compile Include="Migrations\201910301730323_addedcategory.Designer.cs">
       <DependentUpon>201910301730323_addedcategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911091850571_auctionValidations.cs" />
+    <Compile Include="Migrations\201911091850571_auctionValidations.Designer.cs">
+      <DependentUpon>201911091850571_auctionValidations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911091911012_auctionValidation.cs" />
+    <Compile Include="Migrations\201911091911012_auctionValidation.Designer.cs">
+      <DependentUpon>201911091911012_auctionValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +100,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910301730323_addedcategory.resx">
       <DependentUpon>201910301730323_addedcategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911091850571_auctionValidations.resx">
+      <DependentUpon>201911091850571_auctionValidations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911091911012_auctionValidation.resx">
+      <DependentUpon>201911091911012_auctionValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

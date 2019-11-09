@@ -11,7 +11,7 @@
             </button>
         </div>
         <div id="listArea">
-            @{Html.RenderAction("Listing");}
+            @{Html.RenderAction("Listing", new { categoryID = Model.CategoryID, searchTerm = Model.SearchTerm, pageNo = Model.PageNo });}
         </div>
 
     </div>
@@ -54,6 +54,16 @@
         $("#picturesArea .image").click(function () {
             $(this).remove();
         });
+    }
+
+    function ReloadListing() {
+         $.ajax({
+               url: "@Url.Action("Listing","Auctions")",
+               type: "get"
+           }).done(function (response) {
+               $("#listArea").html(response);
+           });
+        
     }
 </script>
 

@@ -13,11 +13,11 @@
     <div class="modal-body">
         <div class="form-group">
             <label>Title</label>
-            <input class="form-control" name="Title" />
+            <input class="form-control" name="Title" value=@Model.Title />
         </div>
 
         <div class="form-group">
-            <label>Description</label>
+            <label>Category</label>
             <select class="form-control" name="CategoryID">
                 @foreach (var category in Model.Categories)
                 {
@@ -28,22 +28,22 @@
 
         <div class="form-group">
             <label> Description</label>
-            <input class="form-control" name="Description" />
+            <input class="form-control" name="Description" value=@Model.Description />
         </div>
 
         <div class="form-group">
             <label>ActualAmount</label>
-            <input class="form-control" name="ActualAmount" />
+            <input class="form-control" name="ActualAmount" value=@Model.ActualAmount />
         </div>
 
         <div class="form-group">
             <label>StartingTime</label>
-            <input class="form-control" name="StartingTime" />
+            <input class="form-control" name="StartingTime" value=@Model.StartingTime />
         </div>
 
         <div class="form-group">
             <label>EndingTime</label>
-            <input class="form-control" name="EndingTime" />
+            <input class="form-control" name="EndingTime" value=@Model.EndingTime />
         </div>
         <div class="form-group">
             <label>Select pictures</label>
@@ -51,6 +51,8 @@
             <div id="picturesArea" class="mt-2"></div>
             <input type="hidden" name="Auctionpictures" id="pictureIDs" />
         </div> 
+        <div id="formErrors" class="form-group bg-danger" style="display:none" >
+        </div>
         
     </div>
     <div class="modal-footer">
@@ -61,26 +63,49 @@
 
 
 <script>
+    $("#CreateForm").validate({
+        rules: {
+            Title: {
+                required: true,
+                minlength: 5,
+                maxlength: 150
+            }
+        },
+        messages: {
+             Title: {
+                required: "Title is required",
+                minlength: "Minimum length is 5",
+                maxlength: "Maximum length is 150"
+            }
+        }
+    });
     $("#SaveButton").click(function () {
-        var imageIDs = [];
-        $("#picturesArea .image").each(function () {
-            var imageID = $(this).attr("data-id");
-            imageIDs.push(imageID);
-        });
-        $("#pictureIDs").val(imageIDs.join());
-
-        $.ajax({
-            url: "@Url.Action("Create","Auctions")",
-            type: "post",
-            data: $("#CreateForm").serialize()
-        }).done(function (response) {
-            $("#listArea").html(response);
-           $("#formModal").modal("toggle");
-        });
+        if ($("#CreateForm").valid())
+        {
+            var imageIDs = [];
+            $("#picturesArea .image").each(function () {
+                var imageID = $(this).attr("data-id");
+                imageIDs.push(imageID);
+            });
+            $("#pictureIDs").val(imageIDs.join());
+            $.ajax({
+                url: "@Url.Action("Create","Auctions")",
+                type: "post",
+                data: $("#CreateForm").serialize()
+            }).done(function (response) {
+                if (response.Success) {
+                    ReloadListing();
+                    $("#formModal").modal("toggle");
+                }
+                else {
+                    $("#formErrors").html(response.Error);
+                    $("#formErrors").show();
+                }
+            });
+        }
     });
 
     $("#AuctionPictures").change(function () {
-        debugger;
         var pictures = this.files;
         var picsData = new FormData();
         for (var i = 0; i < pictures.length; i++) {

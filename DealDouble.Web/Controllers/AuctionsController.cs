@@ -14,23 +14,31 @@ namespace DealDouble.Web.Controllers
         AuctionsService auctionsService = new AuctionsService();
         CategoriesService categoriesService = new CategoriesService();
         // GET: Auctions
-        public ActionResult Index()
+        public ActionResult Index(int? categoryID, string SearchTerm, int? pageNo)
         {
             
             AuctionListingViewModel model = new AuctionListingViewModel();
             model.PageTitle = "Auctions";
             model.PageDescription = "Auction listing page";
-            
-                return View(model);
+
+            model.CategoryID = categoryID;
+            model.SearchTerm = SearchTerm;
+            model.PageNo = pageNo;
+
+            return View(model);
             
         }
 
-        public ActionResult Listing()
+        public ActionResult Listing( int? categoryID, string searchTerm, int? pageNo)
         {
+            var pageSize = 5 ;
             AuctionListingViewModel model = new AuctionListingViewModel();
-            model.Auctions = auctionsService.GetAllAuction();
+            model.Auctions = auctionsService.SearchAuctions(categoryID , searchTerm, pageNo, pageSize);
+            var totalAuctions = auctionsService.GetAuctionCount();
+
+            model.Pager = new Pager(totalAuctions, pageNo, pageSize);
             
-                return PartialView(model);
+            return PartialView(model);
             
         }
         public ActionResult Create()
@@ -40,33 +48,43 @@ namespace DealDouble.Web.Controllers
             return PartialView(model);
         }
         [HttpPost]
-        public ActionResult Create(CreateAuctionViewModel model)
+        public JsonResult Create(CreateAuctionViewModel model)
         {
-            Auction auction = new Auction();
-            auction.Title = model.Title;
-            auction.CategoryID = model.CategoryID;
-            auction.Description = model.Description;
-            auction.ActualAmount = model.ActualAmount;
-            auction.StartingTime = model.StartingTime;
-            auction.EndingTime = model.EndingTime;
-
-            if (!string.IsNullOrEmpty(model.Auctionpictures))
+            JsonResult result = new JsonResult();
+            if (ModelState.IsValid)
             {
-                //LINQ
-                var pictureIDs = model.Auctionpictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
-                auction.AuctionPictures = new List<AuctionPicture>();
-                auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
 
-                /* the above line means:
-                foreach (var picIDs in pictureIDs)
+                Auction auction = new Auction();
+                auction.Title = model.Title;
+                auction.CategoryID = model.CategoryID;
+                auction.Description = model.Description;
+                auction.ActualAmount = model.ActualAmount;
+                auction.StartingTime = model.StartingTime;
+                auction.EndingTime = model.EndingTime;
+
+                if (!string.IsNullOrEmpty(model.Auctionpictures))
                 {
-                    AuctionPicture auctionPicture = new AuctionPicture();
-                    auctionPicture.PictureID = picIDs;
-                    auction.AuctionPictures.Add(auctionPicture);
-                }*/
+                    //LINQ
+                    var pictureIDs = model.Auctionpictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(ID => int.Parse(ID)).ToList();
+                    auction.AuctionPictures = new List<AuctionPicture>();
+                    auction.AuctionPictures.AddRange(pictureIDs.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+
+                    /* the above line means:
+                    foreach (var picIDs in pictureIDs)
+                    {
+                        AuctionPicture auctionPicture = new AuctionPicture();
+                        auctionPicture.PictureID = picIDs;
+                        auction.AuctionPictures.Add(auctionPicture);
+                    }*/
+                }
+                auctionsService.SaveAuction(auction);
+                result.Data = new { Success = true };
             }
-            auctionsService.SaveAuction(auction);
-            return RedirectToAction("Listing");
+            else
+            {
+                result.Data = new { Success = false, Error= "Unable to save Auction, please enter valid values!" };
+            }
+            return result;
         }
 
         public ActionResult Edit(int ID)
